@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discord Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #1a1c22;
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4">
+
+    <div class="bg-gray-800 text-white rounded-xl shadow-lg p-8 max-w-lg w-full text-center">
+        <h1 class="text-3xl font-bold mb-6">Discord Login</h1>
+        
+        <div id="login-section" class="flex flex-col items-center">
+            <p class="text-gray-400 mb-4">
+                Click the button below to log in with your Discord account.
+            </p>
+            <a id="discord-login-btn"
+               href="https://discord.com/api/oauth2/authorize?client_id=YOUR_CLIENT_ID&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fcallback&response_type=code&scope=identify"
+               class="inline-flex items-center justify-center px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg shadow-md transition-colors duration-200">
+                Login with Discord
+            </a>
+        </div>
+
+        <div id="user-profile" class="hidden flex-col items-center">
+            <h2 class="text-2xl font-bold mb-4">Welcome, <span id="username-display"></span>!</h2>
+            <img id="avatar-display" class="w-24 h-24 rounded-full mb-4" alt="User Avatar">
+            <p class="text-gray-400">You are now logged in.</p>
+        </div>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Get URL parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            const username = urlParams.get('username');
+            const avatarUrl = urlParams.get('avatar');
+
+            const loginSection = document.getElementById('login-section');
+            const userProfile = document.getElementById('user-profile');
+            const usernameDisplay = document.getElementById('username-display');
+            const avatarDisplay = document.getElementById('avatar-display');
+            
+            // Check if the user is logged in (based on URL parameters)
+            if (username) {
+                loginSection.classList.add('hidden');
+                userProfile.classList.remove('hidden');
+                usernameDisplay.textContent = username;
+                avatarDisplay.src = `https://cdn.discordapp.com/avatars/${avatarUrl}`;
+            }
+        });
+
+        // The Discord client ID needs to be inserted into the link
+        const discordClientId = 'YOUR_CLIENT_ID';
+        const loginBtn = document.getElementById('discord-login-btn');
+        const loginUrl = loginBtn.href.replace('YOUR_CLIENT_ID', discordClientId);
+        loginBtn.href = loginUrl;
+
+    </script>
+</body>
+</html>
